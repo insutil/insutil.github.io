@@ -1,0 +1,32 @@
+---
+layout: page
+permalink: /category/study/
+title: study
+---
+
+<div id="archives">
+    <h3 class="category-head">{{ category_name }}</h3>
+    <a name="{{ category_name | slugize }}"></a>
+    {% for post in site.categories["study"] %}
+    {% assign author = site.data.authors[post.author] %}
+    <article class="post-preview">
+      <p class="post-meta" style="margin:0px !important;">
+    <!--{% if post.author %}{{ post.author }} -->
+         <span>
+           {{ post.date | date: '%b  %d,  %Y' }} ,
+           {{ author.name }}</a>
+           <img src="{{ author.email | gravatar }}" alt="A photo of {{ author.name }}" class="gravatar" />
+         </span>
+    <!--{% else %}{{ site.author }}{% endif %}on{{ post.date | date: '%B %d, %Y' }} &middot; {% include read_time.html content=post.content %} -->
+      </p>
+      <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+        <h2 class="post-title">{{ post.title }}</h2>
+        {% if post.subtitle %}
+        <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+        {% else %}
+        <h3 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h3>
+        {% endif %}
+      </a>
+    </article>
+    {% endfor %}
+</div>
