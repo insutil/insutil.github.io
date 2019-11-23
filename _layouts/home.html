@@ -1,0 +1,95 @@
+---
+layout: default
+---
+
+<!-- Page Header -->
+{% if page.background %}
+<header class="masthead" style="background-image: url('/img/bg2.png">
+  {% else %}
+  <header class="masthead">
+    {% endif %}
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>{{ site.title }}</h1>
+            {% if site.description %}
+            <span class="subheading">{{ site.description }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        {{ content }}
+
+        <!-- Home Post List -->
+        {% for post in site.posts limit : 500000 %}
+        {% assign author = site.data.authors[post.author] %}
+        <article class="post-preview">
+          <p class="post-meta" style="margin:0px !important;">
+             <span>
+               {{ post.date | date: '%b  %d,  %Y' }} ,
+               {{ author.name }}</a>
+               <img src="{{ author.email | gravatar }}" alt="A photo of {{ author.name }}" class="gravatar" />
+             </span>
+          </p>
+          <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+            <h2 class="post-title">{{ post.title }}</h2>
+            {% if post.subtitle %}
+            <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+            {% else %}
+            <h3 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h3>
+            {% endif %}
+          </a>
+        </article>
+
+        {% endfor %}
+
+        <!-- Pager -->
+        <!--div class="clearfix">
+          <a class="btn btn-primary float-right" href="{{"/posts" | relative_url }}">View All Posts &rarr;</a>
+        </div-->
+
+      </div>
+      <div>
+
+        <aside class="page-aside">
+          <section class="category">
+            <strong style="color:#2ac1bc;font-size:18px;">categories</strong>
+              <ul>
+                  {% for category in site.categories %}
+                  <li><a class="bold" href="{{ root_url }}{{ site.category_dir }}{{ category | first }}">{{ category | first }} ({{ category | last | size }})</a></li>
+                  {% endfor %}
+              </ul>
+            </section>
+
+          <!--section class="recent-posts">
+            <strong style="color:#2ac1bc;font-size:18px;">Recent Posts</strong>
+            <ul>
+
+              <li><a href="/techcourse/2019/10/14/woowacourse.html">
+                - '우아한테크코스 - 웹 백엔드' 2기 과정에 참여할 사람을 모집합니다.
+              </a></li>
+
+              <li><a href="/experience/2019/10/11/developer-onboarding.html">
+                - How to onboard a new hire / 신규입사자 조직안착 과정
+              </a></li>
+
+              <li><a href="/tools/2019/10/02/clean-architecture-experience.html">
+                - 주니어 개발자의 클린 아키텍처 맛보기
+              </a></li>
+
+            </ul>
+          </section-->
+        </aside>
+
+      </div>
+    </div>
+  </div>
