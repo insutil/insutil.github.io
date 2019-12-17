@@ -1,0 +1,148 @@
+---
+layout: post
+title: "Generic (1)"
+subtitle: "Generic 관련 시리즈 1탄 입니다."
+date: 2019-12-14
+category: [study]
+author: dykim413
+comments: true
+---
+
+Java 를 이용해 프로그래밍을 하면서 가장 난해한것 중 하나가 Generic이 아닌가 싶다.
+아직 Java 경험이 많지 않아서 일수도 있다라고 생각하고 싶지만..
+실상 Generic 의 개념을 학습하고 이정도면 실무에서 사용하는데 무리가 없겠지 라는 생각에
+Class, Interface, Method 등 에 Generic 을 적용하다 보면 온갖 Warning 과 Error 로
+도배된 화면을 마주하게된다.
+
+유연하고 확장가능한 Type 설곌를 위해서라도,
+Java의 Api를 이해하기 위해서라도, 런타임시 언제 발생할지 모르는 타입 불일치에 대한
+불안함을 조금이라도 줄이기 위해 Generic 을 더 학습해야할 필요성을 많이 느꼈다.
+
+그래서 이참에 Generic 에 대해 다시한번 학습하고 그 내용을 정리해보고자 한다.
+
+그 내용은 대충 이렇게 전개될 예정이다.
+  ● Generic 의 개념
+  ● Generic 을 제대로 활용하기 위한 주변 지식,
+  ● 간단한 예제를 통한 검증
+
+그럼 먼저 Generic 이란 무엇인지 얘기해보자.
+Generic 은 Java 5 부터 추가된 개념으로 타입을 파라미터화 해서
+컴파일시 구체적인 타입이 결정되도록 하는것 을 말한다.
+
+Generic 은 Type, Method, Field 등에 사용될 수 있고,
+하나 이상의 타입 매개변수(Type parameter)를 선언 하고 있는 Class 혹은 Interface를
+Generic 클래스, Generic 인터페이스 라 하고 이 둘을 합쳐  Generic Type 이라 합니다.
+추가로 언급하자면 Generic Type에 <span class="red2">실 타입 매개변수 (Actual type parameter)</span>를
+사용하여 인스턴스 화를 하면 이를 Parameterized type 이라고 합니다.
+Parameterized type 은 타입토큰(Type Token) 에 대해 알아볼때 좀더 살펴 보겠습니다.
+
+<img src="https://user-images.githubusercontent.com/55611187/70856995-28187380-1f2a-11ea-8fdc-432d39e27a09.png" />
+
+위 그림에서 다이아몬드 연사자 라고 하는 <> 안의 String 이 실 타입 매개변수가 됩니다.
+
+<img src="https://user-images.githubusercontent.com/55611187/70857034-eb00b100-1f2a-11ea-8217-8567800adae7.png" />
+
+그리고 위 그림은 List 인터페이스의 선언부인데 List<E> 에서 'E' 형식 타입 매개변수 라 합니다.
+
+그럼 이쯤에서 왜 Generic을 써야 하는지에 대해 얘기해보겠습니다.
+아래 그림을 보시죠.
+<img src="https://user-images.githubusercontent.com/55611187/70857130-a0803400-1f2c-11ea-9f85-b4a6eecee360.png">
+지금 보면 해당 코드에서는 강제타입 변환이 2번 일어나게 됩니다.
+  ⓐ 'hello' 라는 String 리터럴을 list.add 할때 String -> Object
+  ⓑ list.get(0) 으로 요소를 가져오는 부분에서 Object -> String
+
+보시면 이미 list.add 부분에서 List 라는 raw type 의 멤버 메서드 add 에 타입이 명확하지 않은 'E'
+를 사용하고 있다고 경고가 뜨고 있습니다. (이런 경고를 제거하는 방법도 알아봅니다.)
+
+아래는 Generic을 적용한 모습입니다.
+<img src="https://user-images.githubusercontent.com/55611187/70857250-091be080-1f2e-11ea-85a5-1a7b1b1ad800.png">
+List 의 형식 매개변수 자리에 실 타입 매개변수 인 String 을 지정해 줌으로써
+애플리케이션의 성능을 갉아먹는 불필요한 타입변환을 제거했습니다.
+
+<img src="https://user-images.githubusercontent.com/55611187/70857262-6b74e100-1f2e-11ea-8868-905c68d29c99.png">
+그리고 실 타입 매개변수로 String이 지정된 List에 정수 100을 넣으려 하자 에러가 발생합니다.
+이처럼 Generic 을 사용하면 컴파일 타임에 강력한 타입체크 를 할 수있습니다.
+이를 통해 런타임에 발생할 수있는 ClassCastException 과 같은 에러를 사전에 방지 할 수 있습니다.
+
+정리해 보면 Generic 을 사용함으로써 얻을 수 있는 장점은 크게 아래의 3가지 정도로 볼 수 있습니다.
+  ⓐ 컴파일 타임에 강력한 타입체크
+  ⓑ 불필요한 타입변환 제거
+  ⓒ 특정 타입에 종속되지 않는 코드 작성 가능
+
+그리고 위에서 본 그림을 설명하는 과정에서 Raw type 이 잠시 언급 되었는데
+앞으로 다룰 capture 에러 회피 등 generic 을 얘기할때 빠지지 않고 등장하기 때문에
+간단히 알아보고 넘어가겠습니다.
+Raw type 이란 타입 파라미터가 없는 제네릭 타입을 말합니다.
+아래 그림을 보시죠.
+
+<img src="https://user-images.githubusercontent.com/55611187/70857506-1c7d7a80-1f33-11ea-9e0b-613cb7e2a9bb.png">
+
+그림에서 'generic' 이 바로 Raw type 변수입니다.
+분명 Generics 이라는 클래스는 Generic 타입으로 정의되었지만 generics 라는 변수는
+실 타입 매개변수 즉 타입 파라미터가 없이 선언되었습니다.
+
+같은 이유로 List<E> 로 선언된 Generic Interface 를 List list = new ArrayList();
+처럼 사용하는것 역시 Raw type 을 사용하는 것이 됩니다.
+
+그래서 Raw type 사용에 대한 경고가 보였던 것이죠.
+
+이왕 Raw type을 언급했으니 Raw type 사용시 반드시 숙지해야 할 점을 알아보겠습니다.
+사실 가능한 Raw type은 사용하지 않는것이 좋습니다.
+Raw type 자체가 Java5 이전의 하위버전 호환성을 위한 것인데 이걸 정확한 이해없이
+사용하다가는 디버깅이 까다로운 런타임 에러를 만나게될 여지를 항상 내포하고 있다고 보아야 합니다.
+
+그럼 Raw type 의 사용은 가능한 피하되 꼭 써야한다면 반드시 알아야 할것은 무엇인고 하니..
+바로 Raw Type의 슈퍼 클래스는 Raw Type 이란 것입니다.
+거기에 상속 받지 않은 Raw type 의 생성자, 인스턴스 메서드, 필드 역시 모두 Raw type 이란 것입니다.
+
+즉 Raw type을 사용할시 타입 파라미터 <T> 를 완전히 지워버립니다.
+거기에다가 Super type 타입 파라미터도 지우고 해당 클래스의 생성자, 메서드, 필드 에 정의된
+모든 타입 파라미터를 지워버린 다는 것이죠... 무시무시 합니다;;
+
+<img src="https://user-images.githubusercontent.com/55611187/70857649-f86f6880-1f35-11ea-9c89-fb5dcf0e826d.png">
+
+그러다 보니 위 그림과 같은 오류가 발생하는 것입니다.
+위 그림을 보면 generic 을 Raw type 으로 선언하고 getString 라는 메서드를 호출하는데,
+위에서 언급한데로 Raw type의 모든 메서드는 Raw type 입니다.
+그래서 List<String> -> List 이 됩니다.
+따라서 getString이 반환하는 요소는 String 이 아닌 Object 타입으로 판정되어
+String 으로 선언된 변수에 Object 타입을 대입할 수 없어서 에러가 발생하는 것이죠.
+
+Raw type 에 대해 더 자세한 내용은 <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.8" target="_blank">JLS 4.8</a>
+해당 링크를 참조 하시면 됩니다.
+
+Raw type을 얘기하면서 타입 파라미터를 지운다는 언급을 했는데요.
+이에 자연스럽게 연결해서 소거자 (Type erasure) 에 대해서도 잠시 얘기해 보겠습니다.
+
+사실 저희가 작성하는 모든 제네릭 정보는 런타임시에 모두 제거가 됩니다.
+(정확히 100% 모두는 아니구요, 몇가지 예외 case 가 있는데요,
+서브가 슈퍼를 확장하면서 타입을 지정할 경우 타입정보가 소거되지 않습니다.
+또 Upper bounded 에서 특정 타입의 sub 여야 한다에서 extends 뒤에 오는 슈퍼 타입의 정보도
+컴파일하고 남아 런타임에도 사용 됩니다.
+이에 대해서는 슈퍼타입토큰, Bounded type 을 얘기할때 언급하겠습니다.)
+
+이렇게 소거자를 통해 타입정보를 제거하는 이유는 하위 버전과의 호환때문입니다.
+C#은 호환성 따위 바로 무시해버리는 쪽을 택했는데요, Java 는 지독스러울 정도로 하위 버전과의
+호환을 중요시 생각하는것 같습니다.
+
+어쨌든 소거자에 의해 List<String> list = new ArrayList<>(); 여기서 String 과 같은
+제네릭 정보는 모두 소거됩니다.
+
+근데 여기서 그럼 어떻게 이런 프로그램이 실행되는지가 궁금하실 텐데요.
+그건 컴파일러가 컴파일 타임에 제네릭 정보를 체크해서 코드에 casting 코드를 추가해놓기 때문입니다.
+컴파일러.. 참 열일합니다~
+
+여기까지 나름 학습한 내용을 적어내려 가느라 시간이 꾀나 지났는데도.. 아직 못한 얘기가 더 많은것 같습니다.
+
+Generic 타입의 상속, Bounded type parameter, Wildcard, 타입토큰, Intersection type 등등 그리고 위에서 언급한
+부분 중에서도 보충하고 싶은 부분들이 보이네요.
+
+이번엔 Wild card 와 Bounded type parameter 를 묶어 같이 얘기해보겠습니다.
+우선 Bounded Type parameter 는 경계, 제한 을 둔다는 뜻입니다.
+여기엔 또 상위제한( Upper bounded ), 하위제한( Lower bounded ) 이 있습니다.
+그리고 타입제한을 한개이상의 타입으로 제한하는 Intersection Type (Multi Bounded) 이 있습니다.
+
+그리고 Wild card 는 '?' 로 나타내어 지고 알 수 없는 타입을 의미 합니다.
+ ● <?> 모든 타입을 의미합니다, <? extends Object> 와 같습니다.
+ ● <? super 타입> 명시된 타입과 그 상위 타입
+ ● <? extends 타입> 명시된 타입과 그 하위 타입 mmmmmm
