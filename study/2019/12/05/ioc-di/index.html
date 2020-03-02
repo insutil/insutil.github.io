@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    IoC &amp; DI - 사람과 기술을 연결하는 도구 제작소
+    
+  </title>
+
+  <meta name="description" content="IoC 컨테이너 &amp; DI Iversion of Control 은 Dependency Injection 이라고도 하며, spring application 에서는 객체의 생성, 관계설정, 사용, 제거 등의 작업을 코드가 아닌 독립된 컨테이너가 담당함을 뜻합니다. 그래서 스프링 컨테이너...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://insutil.github.io/study/2019/12/05/ioc-di/">
+  <link rel="alternate" type="application/rss+xml" title="사람과 기술을 연결하는 도구 제작소" href="/feed.xml">
+</head>
+
+<body>
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav_bak" style="opacity:1 !important;">
+  <div class="container">
+    <!--a class="navbar-brand" href="/">사람과 기술을 연결하는 도구 제작소</a-->
+    <a class="navbar-brand" href="/"><img src='/img/logo.png' width="190" height="60" /> 기술 블로그 </a>
+    <!--button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <!--div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div-->
+  </div>
+</nav>
+
+  
+
+
+  <div class="container" style="margin-top:120px;">
+    <div class="row">
+      <div class="col-lg-10 col-md-10 mx-auto">
+        <h1>IoC & DI</h1>
+        <div class="magt20">
+        	Dec 05, 2019 • 김도영
+        	<img src="http://www.gravatar.com/avatar/303b3f5ab2d7a74b5dd1216fbb11aa27?s=50" alt="A photo of 김도영" class="gravatar" />
+        </div>
+        
+        <blockquote class="magt20">스프링의 핵심기술중 IoC & DI에 대해 알아봅니다.</blockquote>
+        
+        <div style="margin-top:30px;"><p>IoC 컨테이너 & DI</p>
+<p>Iversion of Control 은 Dependency Injection 이라고도 하며,</p>
+<p>spring application 에서는 객체의 생성, 관계설정, 사용, 제거 등의 작업을 코드가 아닌</p>
+<p>독립된 컨테이너가 담당함을 뜻합니다.</p>
+<p>그래서 스프링 컨테이너를 IoC 컨테이너 라고도 합니다.</p>
+
+<p class="magt30">스프링에선 IoC를 담당하는 컨테이너를 빈 팩토리 또는 애플리케이션 컨텍스트 라고 칭합니다.</p>
+<p>스프링 컨테이너 = IoC 컨테이너 = 빈 팩토리 = 애플리케이션 컨텍스트 라고 봐도 </p>
+<p>크게 틀리지 않지만 객체의 생성과 관계 설정 이라는 DI 관점에서 볼때는</p>
+<p>스프링 컨테이너를 빈 팩토리 라고 할 수 있고, 빈의 생성부터, 관계설정, 제거에 이르기까지</p>
+<p>빈의 life cycle 관리 에 더해 기타 엔터프라이즈 애플리케이션 개발에 필요한 기능을 추가한 것을</p>
+<p>애플리케이션 컨텍스트 라고 보시면 됩니다.</p>
+
+<p class="magt30">BeanFactory</p>
+    <p>● 애플리케이션 컴포넌트를 관리하는 저장소</p>
+    <p>● 빈 관련 메타설정 정보를 읽어들여 빈을 구성하고 제공</p>
+    <p>● life cycle interface 지원</p>
+
+<p class="magt30 magb20">빈 팩토리에서 일어나는 빈의 생성, 초기화 인터페이스 와 순서는 아래의 그림을 참고 하면 됩니다.</p>
+<img src="https://user-images.githubusercontent.com/55611187/69914170-55721580-1484-11ea-81f6-793bd0279be4.png" width="600">
+
+<p class="magt20">위 그림에서 특히 관심이 가는것은 BeanPostProcesser 라는 빈 후처리 인터페이스 입니다.</p>
+<p>여기서 빈 후처리란 빈이 최초에 생성되고 나서 빈의 설정을 후처리 함으로써 빈의 생명주기,</p>
+<p>빈팩토리의 생명주기에 관여할 수 있게 함을 뜻합니다.</p>
+
+<p class="magt30">흔히 코딩을 할때 Autowired 어노테이션을 이용해서 빈을 DI 받습니다.</p>
+<p>그런데 어떻게 어노테이션 하나만으로 적절한 시점에 DI 할 후보 빈을 선정하고</p>
+<p>실제 빈을 주입하는지에 대해 궁금증을 가지신 분들이 계실지 모르겠는데..</p>
+<p>바로 빈 후처리기, BeanPostProcesser 에 의 후처리 될때 빈이 주입됩니다.</p>
+<p>후처리 순서는 그림에서 보듯이 아래와 같습니다.</p>
+  <p class="magt20">ⓐ BeanPostProcesser 의 postProcessBeforeInitialization (빈 초기화 전)</p>
+  <p>ⓑ InitializingBean's afterPropertiesSet</p>
+  <p>ⓒ custom init-method</p>
+  <p>ⓓ postProcessAfterInitialization ( 빈 초기화 후 )</p>
+
+<p class="magt30">ApplicationContext</p>
+    <p>● 스프링의 IoC 컨테이너는 일반적으로 애플리케이션 컨텍스트를 칭한다.</p>
+    <p>● BeanFactory 를 확장 (자체로 빈 팩토리 기능을 한다.)</p>
+    <p>● 메시지 소스 처리 기능, 이벤트 퍼블리싱, 리소스 로딩 등의 많은 추가 기능을 가진다.</p>
+
+<p class="magt30">ApplicationContext 가 추가적으로 가지는 기능에 대해 자세히</p>
+<p class="magb20">알고 싶다면 스프링 레퍼런스를 참고하시면 됩니다.</p>
+<img src="https://user-images.githubusercontent.com/55611187/69914165-4ee39e00-1484-11ea-949e-d94b7d75001d.png" width="600">
+
+<p class="magt30">보다시피 BeanFactory를 구현하고 있고, 위에서 언급한</p>
+<p>이벤트, 메시지, 리소스로더 관련 기능등을 구현하고 있습니다.</p>
+<p>(앞으로의 포스팅을 통해서 하나하나 전부 다뤄볼 예정입니다.)</p>
+
+<p class="magt30">지금까지 IoC 컨테이너 에 대해 최대한 간략하게 정리한 내용입니다.</p>
+
+<p class="magt30">IoC 컨테이너의 가장 기초적이고 중요한 역할은 오브젝트를 생성하고 관리하는 것입니다.</p>
+<p>즉 빈 을 관리하는것이 IoC 컨테이너의 가장 중요한 임무인 것이죠.</p>
+<p>IoC 컨테이너가 빈을 생성하고 관리하기 위해서는 POJO 클래스와 빈설정 메타정보가 필요합니다.</p>
+
+<p class="magt30">부트 기반으로 대부분의 자바 웹 애플리케이션을 제작하는 요즘은</p>
+<p>xml과 같은 외부 설정파일을 이용하기 보다는 어노테이션 기반으로 빈 설정을 합니다.</p>
+<p>애플리케이션 컨텍스트를 저희가 코드로 생성할 일도 거의 없습니다.</p>
+<p>물론 이미 생성된 애플리케이션 컨텍스트를 활용할 수는 있습니다.</p>
+<p>지금 부터는 xml 을 이용한 빈설정, 어노테이션을 이용한 빈 설정 두방법 모두를 간단히 테스트 해보겠습니다.</p>
+<p class="magt50">단...... 다음 포스팅에서요~~ 오늘은 이만..</p>
+</div>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/etc/2019/11/30/blog-posting/" data-toggle="tooltip" data-placement="top" title="Blog Posting">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+          <a class="btn btn-primary float-right" href="/study/2019/12/15/regex/" data-toggle="tooltip" data-placement="top" title="자바 정규식 (Regular Expression)">Next<span class="d-none d-md-inline">
+              Post</span> &rarr;</a>
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div id="post-disqus" class="container">
+  <div id="disqus_thread" class="col-lg-10 col-md-10 mx-auto" style="margin-top:30px;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://insutil-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          
+          
+        </ul>
+        <p class="copyright text-muted">© insutil. All rights reserved. Powered by GitHub Pages.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Java static - 사람과 기술을 연결하는 도구 제작소
+    
+  </title>
+
+  <meta name="description" content="블로그 개설 후 제대로 된 첫 포스팅 작성입니다. 첫 포스팅 이니 만큼 어떤 내용을 다뤄야 하나 고민을 하다가 기초부터 잘 다지고 완전히 내것으로 만들자는 생각에 그중 처음으로 자바의 static 키워드에 대해 얘기해 볼까합니다.">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://insutil.github.io/study/2019/11/19/static/">
+  <link rel="alternate" type="application/rss+xml" title="사람과 기술을 연결하는 도구 제작소" href="/feed.xml">
+</head>
+
+<body>
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav_bak" style="opacity:1 !important;">
+  <div class="container">
+    <!--a class="navbar-brand" href="/">사람과 기술을 연결하는 도구 제작소</a-->
+    <a class="navbar-brand" href="/"><img src='/img/logo.png' width="190" height="60" /> 기술 블로그 </a>
+    <!--button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <!--div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div-->
+  </div>
+</nav>
+
+  
+
+
+  <div class="container" style="margin-top:120px;">
+    <div class="row">
+      <div class="col-lg-10 col-md-10 mx-auto">
+        <h1>Java static</h1>
+        <div class="magt20">
+        	Nov 19, 2019 • 김도영
+        	<img src="http://www.gravatar.com/avatar/303b3f5ab2d7a74b5dd1216fbb11aa27?s=50" alt="A photo of 김도영" class="gravatar" />
+        </div>
+        
+        <blockquote class="magt20">java 에서 static 의 기초 개념과 올바른 사용에 도움이 되고자 작성한 포스팅 입니다.</blockquote>
+        
+        <div style="margin-top:30px;"><p>블로그 개설 후 제대로 된 첫 포스팅 작성입니다.</p>
+<p>첫 포스팅 이니 만큼 어떤 내용을 다뤄야 하나 고민을 하다가</p>
+<p>기초부터 잘 다지고 완전히 내것으로 만들자는 생각에 그중 처음으로</p>
+<p class="magb30">자바의 static 키워드에 대해 얘기해 볼까합니다.</p>
+
+<p>static 키워드는 프로그래밍 에서 '전역', '정적', 거기에 '공유' 등의 의미로 해석될 수 있습니다.</p>
+<p>static 에 대해 얘기할때 빠질 수 없는게 메모리 할당과 관련된 것인데,</p>
+<p class="magb30">java 에서 메모리를 할당 받는 방법은 크게 2가지로 볼 수 있습니다.</p>
+
+<p class="fwb">① 객체(인스턴스) 생성</p>
+<p class="fwb magb30">② static 사용</p>
+
+<p><img width="500" alt="1" src="https://user-images.githubusercontent.com/55611187/69144846-9aef2400-0b0f-11ea-9d62-bd5db26dd6f8.png"></p>
+<p>위 그림을 보면 객체 생성을 하지않아 메모리를 할당받지 못했기 때문에</p>
+<p class="magb20">num 이라는 변수에 접근할 수 없습니다.</p>
+
+<p><img width="500" alt="2" src="https://user-images.githubusercontent.com/55611187/69144910-c114c400-0b0f-11ea-87de-b50284309530.png"></p>
+<p>이번 그림을 보시면 new 연산자를 통해 객체(인스턴스)를 생성.</p>
+<p class="magb20">메모리에 할당이 되었기 때문에 접근에 문제가 없는걸 볼 수 있습니다.</p>
+
+<p>다음으로 static 사용한 예를 보시죠.</p>
+<p><img width="500" alt="3" src="https://user-images.githubusercontent.com/55611187/69144925-ca059580-0b0f-11ea-958f-09944e385f97.png"></p>
+<p>변수를 static 으로 선언했을 뿐인데 객체 생성 없이 class를 통해 바로 접근 할 수 있습니다.</p>
+<p>그럼 여기서 한가지 드는 의문.. 그렇다면 굳이 객체 생성을 하지 않고</p>
+<p>가능한 모든 변수 와 메서드를 static 으로 선언해서 사용하면 되지 않을까??</p>
+<p>여기에서 static 의 장.단점이 극명하게 드러납니다.</p>
+
+<p>그것을 다루기 전에 JVM의 memory 구조에 대해 잠깐 얘기해 보겠습니다.</p>
+<img width="560" alt="1" src="https://user-images.githubusercontent.com/55611187/69149816-a85ddb80-0b1a-11ea-9eae-d5789d314f7b.png">
+<p>사실 JVM 구조만 가지고 얘기를 해도</p>
+<p>포스팅의 모든 지면을 할애해도 부족할 만큼 언급하고 싶은 내용이 많습니다만.. </p>
+<p>static keyword 관련된 내용만 최대한 간단히 훓고 지나가겠습니다.</p>
+
+<p class="magt30">제일 먼저 개발자가 작성한 .java 파일을 compiler 가 .class (byte code)로 변환 합니다.</p>
+<p>다음으로 변환된 .class 파일을 class loder가 JVM의 메모리 영역( Runtime data area ) 에 적재합니다.</p>
+<p>메모리에 적재된 class 파일은 execution engine 에 의해 실행됩니다.</p>
+
+<p>그리고 보시면 Method Area (Class Area, Code Area 라고도 불립니다.) 가 보입니다.</p>
+<p>바로 이 Method Area에 Static 변수가 저장됩니다. (그 외에도 variable, method, type, constant 관련 정보도 저장.)</p>
+<p>저장되는 시점은 class 파일이 메모리에 로드되는 시점입니다.</p>
+<p>즉 데이터의 메모리 할당이 컴파일 시점에 이루어 지는 것입니다.</p>
+
+<p class="magt30">이렇게 메모리에 로드되고 나면 런탐임 중에 필요할 때 마다 동적으로 할당 및 해제되는</p>
+<p>동적 데이터와 달리 어플리케이션의 실행 부터 종료까지 메모리에 로드된 채로 남아 있게 됩니다.</p>
+
+<p>이런 특징으로 인해 static 은 그 기능 과 역할이 분명히 구분되어 집니다.</p>
+
+<p class="magt30">java에서 static 이 사용되는 영역은 변수, 메서드, 클래스가 있고 static 블럭 도 존재합니다.</p>
+<p>하나씩 짚어보겠습니다.</p>
+
+<p class="magt30">● static 변수 (클래스 변수)는</p>
+    <p class="magl30">- 하나의 메모리 영역을 모든 인스턴스가 공유합니다.</p>
+    <p class="magl30">- 특정 인스턴스에 종속되지 않습니다.</p>
+    <p class="magl30">- 종합해보면 인스턴스 없이도 사용 가능하다~ 가 됩니다.</p>
+
+<p class="magt20">● static 메서드</p>
+    <p class="magl30">- 클래스 메서드 라고도 하고, 상속 클래스에서 보이지 않습니다.</p>
+    <p class="magl30">- Override 할 수 없습니다.</p>
+
+<p class="magt20">● static 클래스</p>
+    <p class="magl30">- 중첩 클래스(nested class) 에만 사용 가능합니다.</p>
+    <p class="magl30">- 상위 클래스의 멤버 필드 중에는 static 필드에만 접근 가능합니다.</p>
+    <p class="magl30">- 이런 특징은 유사 클래스를 하나로 묶어 관리와 사용을 용이하게 할 수 있습니다.</p>
+
+<p class="magt20">● static 블럭</p>
+    <p class="magl30">- 클래스의 내부에 만들 수 있는 초기화 블럭입니다.</p>
+    <p class="magl30">- 클래스가 메모리에 로드 될때(초기화 될때) 단 한번 실행됩니다.</p>
+
+ <p class="magt30">여기까지 java 에서 static 이 사용되는 영역과 그에 따른 의미를 살펴보았습니다.</p>
+
+ <p class="magt20">그러면 이제 static 의 장.단점을 정리해보겠습니다.</p>
+
+ <p class="magt20">● 장점</p>
+     <p class="magl30">- 공유되는 자원입니다. 인스턴스 생성때 마다 메모리에 올리고 초기화 하지 않고, 최초의 자원을 모든 인스턴스가 공유합니다.</p>
+     <p class="magl30">- 위와 같은 이유로 잘만 사용하면 메모리를 효율적으로 사용할 수 있습니다.</p>
+     <p class="magl30">- 인스턴스 생성없이 바로 참조하기 때문에 속도가 빠릅니다.</p>
+
+ <p class="magt20">● 단점</p>
+     <p class="magl30">- 무분별한 사용은 메모리 오남용을 발생시킬 수 있습니다.</p>
+     <p class="magl30">- 전역적인 특징으로 인해 추론과 테스트를 힘들게 합니다.</p>
+       <p class="magl30">(공유되는 자원이므로 코드의 여러부분에서 영향을 받을 수 있게 되므로 추적이 힘들어 집니다.)</p>
+     <p class="magl30">- 객체 지향의 패러다임과 맞지 않습니다.</p>
+       <p class="magl30">(static 변수는 각 객체의 데이터들이 외부로 부터 함부로 접근 할 수 없고 수정될 수 없어야 한다는 캡슐화에 위배됩니다.)</p>
+     <p class="magl30">- 오버라이딩 할 수 없는 멤버들로 인해 클래스의 확장성을 떨어뜨립니다.</p>
+     <p class="magl30">- java 와 같은 객체지향 언어들의 장점인 재사용성 을 떨어뜨리고 interface 구현에 사용할 수 없습니다.</p>
+
+<p class="magt20">이렇게 보면 단점이 더 많은것 같은데요.</p>
+<p>실제로 제가 본 어떤 개발자의 포스팅에서는</p>
+<p>java 에서의 static 사용을 거의 <b>악</b>으로 규정하는 내용도 보았습니다;;</p>
+<p>하지만 분명 제대로 알고 사용한다면 단점을 최소화 하고 장점을 극대화 해서</p>
+<p>어플리케이션 성능에 도움이 될 수있습니다.</p>
+
+<p class="magt30">마지막으로 한가지만 더 언급하자면 java에서 final 변수에는 관례적으로 static 을 붙여서 사용하는 경우가 많습니다.</p>
+<p>왜 그런가를 생각해 보면 static 이라는 녀석에 대해 또 한번 곱씹을 수 있는 부분 인데요.</p>
+<p>final 은 단한번  초기화 가능함을 뜻합니다.</p>
+<p class="magt30">다시 말해 해당 변수의 용도와 의미가 최초 한번 설정되면, 변하지 않고 고정되어야 한다는 뜻입니다.</p>
+<p>클래스의 모든 인스턴스에서 사용해야 하는 데이터고 바뀌지 않을 꺼라면, 인스턴스가 생성될때 마다</p>
+<p>메모리를 할당받고 초기화 시키지 말고, 최초 한번 메모리에 올리고 그 공간을 모든 인스턴스가 쭈~우욱~</p>
+<p>사용하게 한다면??? 매번 메모리를 할당 하는것 보다 효율적일 수 있습니다.</p>
+<p>또 final은 상수와 같은 (정확히 final = 상수 는 아닙니다.) 의미이니 동시성 문제도 없습니다.</p>
+<p>이런 이유로 멤버 final 변수는 static final로 선언하는 것이 관례가 된거 같습니다.</p>
+
+<p class="magt30">여기까지 java 의 static 에 대해 얘기해보았습니다.</p>
+
+<p class="magt30">두서없는 글 읽어주셔서 감사합니다.</p>
+</div>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/instory/study/2019/11/17/created-blog/" data-toggle="tooltip" data-placement="top" title="인스유틸 블로그 첫걸음">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+          <a class="btn btn-primary float-right" href="/etc/2019/11/30/blog-posting/" data-toggle="tooltip" data-placement="top" title="Blog Posting">Next<span class="d-none d-md-inline">
+              Post</span> &rarr;</a>
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div id="post-disqus" class="container">
+  <div id="disqus_thread" class="col-lg-10 col-md-10 mx-auto" style="margin-top:30px;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://insutil-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          
+          
+        </ul>
+        <p class="copyright text-muted">© insutil. All rights reserved. Powered by GitHub Pages.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+</body>
+</html>

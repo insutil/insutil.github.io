@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    String(문자열) 완전 정복 - 사람과 기술을 연결하는 도구 제작소
+    
+  </title>
+
+  <meta name="description" content="안녕하세요! 신입사원 장현입니다. 포스팅에 맛들려서 이렇게 두 번째 포스팅을 하게 되었습니다. 부디 첫 포스팅보다 더 나아지길 바라며 글을 작성해봅니다... 자바로 프로그래밍하게 되면 자바의 문자열을 이리저리 가공하여 쓰는 경우가 허다합니다. 물론 여러분들처럼 프로그래밍 고수분들은...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/vendor/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://insutil.github.io/study/2019/12/15/string/">
+  <link rel="alternate" type="application/rss+xml" title="사람과 기술을 연결하는 도구 제작소" href="/feed.xml">
+</head>
+
+<body>
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav_bak" style="opacity:1 !important;">
+  <div class="container">
+    <!--a class="navbar-brand" href="/">사람과 기술을 연결하는 도구 제작소</a-->
+    <a class="navbar-brand" href="/"><img src='/img/logo.png' width="190" height="60" /> 기술 블로그 </a>
+    <!--button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <!--div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div-->
+  </div>
+</nav>
+
+  
+
+
+  <div class="container" style="margin-top:120px;">
+    <div class="row">
+      <div class="col-lg-10 col-md-10 mx-auto">
+        <h1>String(문자열) 완전 정복</h1>
+        <div class="magt20">
+        	Dec 15, 2019 • 장현
+        	<img src="http://www.gravatar.com/avatar/3502816da5460f6457f1cabd9a522532?s=50" alt="A photo of 장현" class="gravatar" />
+        </div>
+        
+        <blockquote class="magt20">문자열에 대해 심도있게 알아봅니다</blockquote>
+        
+        <div style="margin-top:30px;"><h2 style="color: #005cbf">안녕하세요! 신입사원 장현입니다.</h2>
+<h6>포스팅에 맛들려서 이렇게 두 번째 포스팅을 하게 되었습니다. 부디 첫 포스팅보다 더 나아지길 바라며 글을 작성해봅니다...</h6>
+<br/>
+자바로 프로그래밍하게 되면 자바의 문자열을 이리저리 가공하여 쓰는 경우가 허다합니다.
+<br/>
+물론 여러분들처럼 프로그래밍 고수분들은 식은 죽 먹기로 화려하게 가공하시겠지만,
+<br/>
+저같은 초보개발자는 막상 문자열을 자르거나 추출해야하는 업무를 맡으면 땀 뻘뻘 흘리면서 구글링을 하겠죠 ㅠㅠ
+<br/>
+
+안그래도 초보 개발자들은 개발이 느린데 이러한 문제로 더 느려지는 것을 방지하기 위해
+<br/>
+그.래.서 제가 이렇게 문자열 완전 정복이라는 주제로 글을 쓰게 되었습니다.
+<br/>
+<br/>
+<h3>아래는 String이 가지는 기본 메서드입니다.</h3>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>1. char charAt(int index)</h3><br/>
+- index(정수)의 문자를 읽어냅니다.<br/>
+예) "abcde".charAt(2) 는 'c'가 읽어집니다. 0부터 시작하기 때문에 3 번째인 c가 읽어지는 것입니다.<br/>
+반환 값은 이름에서 알다시피 char 형태로 반환이 됩니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>2. int codePointAt(int index)</h3><br/>
+- 이것도 charAt과 마찬가지로 index로 접근하여 문자를 읽어내지만 반환값은 유니코드(int 형)로 반환합니다<br/>
+예) "abcde".codePointAt(0) 은 a의 유니코드인 97를 반환합니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>3. int codePointBefore(int index)</h3><br/>
+- 와우... codePointAt과 똑같지만, 한가지 다른 점이 있다면 codePointAt는 시작 index가 1부터 시작합니다<br/>
+말로 이해가 잘 안된다면 아래 예를 보시고 위의 codePointAt 예를 비교하시면 이해가 잘 될 겁니다!<br/>
+예) "abcde".codePointBefore(1) 은 a의 유니코드인 97를 반환합니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>4. int codePointCount(int beginIndex, int endIndex)</h3><br/>
+- 지정한 범위안에 있는 유니코드의 갯수를 리턴합니다 (그닥 안쓰일거 같긴한데... 흠 잘 모르겠네요)<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>5. int compareTo(String anotherString)</h3><br/>
+- 2개의 두 문자열을 비교하고 int형 값을 반환합니다<br/>
+예) x.compareTo(y)<br/>
+1. x 와 y가 동일한 경우 0을 반환합니다.<br/>
+2. x 가 y보다 값이 큰 경우 양수를 반환합니다.<br/>
+3. x 가 y보다 값이 작은 경우 음수를 반환합니다.<br/>
+부가 설명 - 맨 첫자리부터 차례대로 비교하는 특성을 가지고 있으며, 2개의 스트링을 사전적으로 비교합니다.<br/>
+비교는 스트링내의 각각의 문자의 유니코드 값에 근거해 행해집니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>6. int compareToIgnoreCase(String str)</h3><br/>
+- compareTo와 모든 것이 같지만, 단 하나 대소문자를 무시한다는 점에서 다릅니다.<br/>
+예) "A".compareToIgnoreCase("a"); -> 대소문자가 무시 되므로 반환 값은 0입니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>7. String concat(String str)</h3><br/>
+- 2개의 문자열을 붙여주는 메서드입니다.<br/>
+예) String str1 = "안녕하세요! ";<br/>
+String str2 = "장현입니다~~~";<br/>
+String result = str1.concat(str2);<br/>
+System.out.println(result);<br/>
+콘솔 출력 : 안녕하세요! 장현입니다~~~<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>8. boolean contains(CharSequence s)</h3><br/>
+- contains 메서드는 특정 문자열이 포함되어 있는 지 확인하는 기능을 제공합니다.<br/>
+특정 문자열이 포함되어 있다면 true 를, 없다면 false 를 반환합니다.<br/>
+예) String str = "안녕하세요 장현입니다!";<br/>
+str.contains("장현"); -> "장현"이 포함되어 있으므로 true<br/>
+str.contains("김도영"); -> "장현"이 포함되어 있지 않으므로 false<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>9. boolean contentEquals(CharSequence cs), contentEquals(StringBuffer sb)</h3><br/>
+- 문자열이 100% 동일해야 true 를 반환하고 하나라도 다르면 false 를 반환합니다. (문자의 순서 등..)<br/>
+contentEquals 가 equals 와 다른 점은 equals 는 String 끼리 비교하는 것에 반해 contentEquals 는 CharSequence 또는 StringBuffer 를 인자로 받아 String 과 비교합니다.<br/>
+예) String str = "장현";<br/>
+StringBuffer sb = new StringBuffer("장현");<br/>
+str.contentEquals(sb); -> 반환 값은 true<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>10. static String copyValueOf(char[] data) , copyValueOf(char[] data, int offset, int count)</h3><br/>
+- char[] 배열에 있는 값들을 하나의 String 으로 변환합니다. 그리고 offset 과 count 를 지정해 시작 지점에서 count 만큼 잘라 낼 수도 있습니다.<br/>
+예) char[] temp = new char[4];<br/>
+temp[0] = '인';<br/>
+temp[1] = '스';<br/>
+temp[2] = '유';<br/>
+temp[3] = '틸';<br/>
+String.copyValueOf(temp); -> "인스유틸";<br/>
+String.copyValueOf(temp, 2, 1); -> "유";<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>11. boolean endsWith(String suffix)</h3><br/>
+- 주어진 문자열이 파라미터로 끝나는지 체크합니다. 반환 값은 boolean 입니다.<br/>
+예) String str = "인스유틸";<br/>
+str.endsWith("틸"); -> true<br/>
+str.endsWith("유틸"); -> true<br/>
+str.endsWith("인스유틸"); -> true<br/>
+str.endsWith("유"); -> false<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>12. boolean equals(Object anObject)</h3><br/>
+- 문자열이 주어진 파라미터와 동일한지 확인합니다. 이것 또한 boolean 이 반환됩니다.<br/>
+예) String str = "장현";<br/>
+str.equals("장현"); -> true<br/>
+str.equals("정채현"); -> false<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>13. boolean equalsIgnoreCase(String anotherString)</h3><br/>
+- 비교대상 문자열을 대소문자 구분 없이 비교해서 동일하면 true, 그래도 다르다면 false 를 리턴합니다.<br/>
+예) String str = "abcde";<br/>
+str.equalsIgnoreCase("aBcDE"); -> 대소문자를 구분하지 않으므로 true 입니다<br/>
+str.equals("aBcDE"); -> equals 는 대소문자를 구분하므로 false 입니다<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<h3>14. static String format(Locale l, String format, Object... args), static String format(String format, Object... args)</h3><br/>
+- 지정된 위치에 값을 대입해서 문자열을 만들어내는 용도로 사용됩니다. 이건 예로 보는 것이 이해하기 더 빠르겠습니다.<br/>
+예) String str = String.format("p1 : %s, p2 : %.2f", "one", 1.234f); // String format 으로 변경된 값을 str 변수에 바인딩<br/>
+System.out.println(str); -> 콘솔 출력 : p1 : one, p2 : 1.23<br/>
+해설 : %s는 스트링, %d는 숫자, %f는 실수에 대한 변경을 의미합니다.<br/>
+<br/>
+<h5>스트링의 %s의 대표적인 기능 및 예시는 다음과 같습니다.</h5><br/><br/>
+%s : 해당 위치의 스트링을 대체합니다.<br/><br/>
+%10s : 숫자(10)만큼 문자열 좌측(+)에 공백을 채워 문자열 길이를 만듭니다. 숫자보다 문자열 길이가 긴 경우에는 그대로 보여집니다.<br/>
+ex) "장현" -> "________장현" (_는 공백)<br/><br/>
+%-10s : 숫자(10)만큼 문자열 우측(-)에 공백을 채워 문자열 길이를 만듭니다. 숫자보다 문자열 길이가 긴 경우에는 그대로 보여집니다.<br/>
+ex) "장현" -> "장현________" (_는 공백)<br/><br/>
+%10.3s : 점(.)우측에 해당하는 숫자(3) 만큼 스트링을 자른 후 숫자(10)만큼 문자열 점(.)좌측에 공백을 채워 문자열 길이를 만듭니다.<br/>
+ex) "인스유틸" -> "_______인스유"<br/><br/>
+%-10.3s : 점(.)우측에 해당하는 숫자(3) 만큼 스트링을 자른 후 숫자(10)만큼 문자열 점(.)좌측에 공백을 채워 문자열 길이를 만듭니다.<br/>
+ex) "인스유틸" -> "인스유_______"<br/><br/>
+<br/>
+스트링의 %d와 %f, 기타 %t에 대한 기능도 여러가지 있지만 추후에 더 추가하도록 하겠습니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>15. byte[] getBytes(), byte[] getBytes(Charset charset), byte[] getBytes(String charsetName)</h3><br/>
+- 문자열을 인코딩 된 byte 형태로 넘겨줍니다. 매개변수 없이 getBytes() 메소드를 사용하면 플랫폼에 따른 default charset 을 사용합니다.<br/>
+만일 특정 charset 을 지정할 경우 ISO-8859-1, euc-kr, utf-8 등의 charset 이 존재하는데 encoding 과 decoding 할 때 이 charset 을 맞춰서 해야합니다.<br/>
+그러지 않을 경우 문자가 깨지는 현상이 발생하게 됩니다.<br/>
+예) String str = "Hello, 장현!"; // 자바는 내부 문자열을 모두 유니코드 처리합니다.<br/><br/>
+// 유니코드 문자열을 UTF-8 캐릭터 바이트배열로 변환하여 반환<br/>
+byte[] utf8 = str.getBytes("UTF-8"); -> 문자열을 utf-8로 인코딩 <br/>
+new String(utf8, "UTF-8") -> 인코딩 된 바이트 배열을 다시 문자열로 디코딩 (UTF-8로 지정했으니 UTF-8로 디코딩 해야합니다. 다른 charset을 사용하면 문자가 깨집니다)<br/><br/>
+// 유니코드 문자열을 EUC-KR 캐릭터 바이트배열로 변환하여 반환<br/>
+byte[] euckr = str.getBytes("EUC-KR");<br/>
+new String(euckr, "EUC-KR") -> 인코딩 된 바이트 배열을 다시 문자열로 디코딩 (EUC-KR로 지정했으니 EUC-KR로 디코딩 해야합니다. 다른 charset을 사용하면 문자가 깨집니다)<br/>
+<br/>
+// 당연히 다른 바이트 배열이므로 사이즈가 다릅니다.<br/>
+utf8.length -> 14<br/>
+euckr.length -> 12<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>16. void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)</h3><br/>
+- 주어진 문자 배열로부터 문자 배열을 추출해냅니다.<br/>
+예) String str = "인스유틸";<br/>
+char[] dst = new char[4];<br/>
+int srcBegin = 2; //srcBegin - 복제하기 위한 문자열에 있는 첫 번째 문자의 인덱스<br/>
+int srcEnd = 4; //srcEnd - 복제하기 위한 문자열에 있는 마지막 문자의 다음 인덱스<br/>
+int dstBegin = 0; // dstBegin - 여기 써있는 인덱스부터 채워 넣는다는 것입니다.<br/>
+str.getChars(srcBegin, srcEnd, dst, dstBegin);<br/>
+System.out.println(dst); -> "  유틸" // dst - 복제되는 배열<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>17. boolean isEmpty()</h3><br/>
+- 스트링이 비어있는 지 확인하는 메서드입니다. 만약 스트링 길이가 0이면 true, 그렇지 않으면 false를 반환합니다.<br/>
+String str1 = "";<br/>
+String str2 = "이수빈";<br/>
+String str3 = null;<br/>
+str1.isEmpty(); -> true<br/>
+str2.isEmpty(); -> false<br/>
+str3.isEmpty(); -> null 값을 가지고 있는 스트링은 isEmpty 메서드를 사용하면 널포인트 익셉션이 뜨니 주의!<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>18. static String join(CharSequence delimiter, CharSequence... elements), static String join(CharSequence delimiter, Iterable<? extends CharSequence> elements)</h3><br/>
+- 컬렉션이나 배열을 하나의 문자열로 묶어서 join 시킵니다. 예제로 보면 바로 이해하실 겁니다.<br/>
+예) List&lt;String&gt; people = new ArrayList<>();<br/>
+people.add("장현");<br/>
+people.add("김도영");<br/>
+people.add("이수빈");<br/>
+people.add("이현승");<br/>
+people.add("명재홍");<br/>
+people.add("장석봉");<br/>
+String peoples = String.join(", ", people);<br/>
+System.out.println(peoples);<br/>
+콘솔 출력 값 : 장현, 김도영, 이수빈, 이현승, 명재홍, 장석봉<br/>
+<br/>
+어렵지 않습니다.<br/>
+<br/>
+join("추가할 문자", "대상 list")<br/>
+<br/>
+join("추가할 문자", "대상 Array")<br/>
+<br/>
+만약 stream의 collect() 안에서 사용하고 싶다면 아래와 같이 Collectors.joining() 을 사용하면 됩니다.<br/>
+예) people.stream().collect(Collectors.joining(", ")); -> 장현, 김도영, 이수빈, 이현승, 명재홍, 장석봉<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>19. int indexOf(String str), int indexOf(String str, int fromIndex), int indexOf(int ch), int indexOf(int ch, int fromIndex)</h3><br/>
+- 문자열 중 입력받은 문자가 있으면 해당 문자의 위치 (index) 값을 리턴하고 문자가 없으면 -1을 리턴합니다.<br/>
+문자열 조회는 index 값 0부터 시작합니다. (왼쪽부터 읽기 시작함을 의미합니다)<br/>
+예) String str = "안녕하세요! 장현입니다!";<br/>
+str.indexOf("요"); -> 4를 반환<br/>
+str.indexOf("장현"); -> 7를 반환<br/>
+str.indexOf("김한출"); -> -1를 반환<br/>
+str.indexOf("!", 6); -> "!"가 5와 12에 위치했는데 index가 6부터 시작하므로 12를 반환<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>20. int lastIndexOf(String str), int lastIndexOf(String str, int fromIndex), int lastIndexOf(int ch), int lastIndexOf(int ch, int fromIndex)</h3><br/>
+- indexOf 는 왼쪽에서부터 조회를 하기 때문에 낮은 index 값을 먼저 조회하게 됩니다.<br/>
+이와 반대로 lastIndexOf 는 끝에서부터 조회를 합니다<br/>
+예) String str = "안녕하세요! 장현입니다!";<br/>
+str.lastIndexOf("!"); -> lastIndexOf는 뒤에서부터 시작하므로 12를 반환<br/>
+str.lastIndexOf("!", 11); -> 인덱스 11부터 보겠다는 뜻이으로 5를 반환<br/>
+str.lastIndexOf("김한출"); -> -1를 반환<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>21. int	length()</h3><br/>
+- 주어진 문자열의 길이를 리턴합니다<br/>
+주의할 점은 index 값을 리턴하는 것이 아니라 실제 문장의 길이(int 형)를 리턴하는 것입니다.<br/>
+예) String str = "장현";<br/>
+str.length() -> 2를 반환<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>22. boolean matches(String regex)</h3><br/>
+- 파라미터에서 원하는 정규표현식을 써서 문자열에 해당하는 패턴이 있는지 알아보는 메서드입니다.<br/>
+예) String str = "안녕하세요! 장현입니다!";<br/>
+str.matches(".*장현*"); -> true 입니다<br/><br/><br/>
+String phonNumber = "010-569-7836";<br/>
+boolean flag = phonNumber.matches("01[06-9]-[0-9]{3,4}-[0-9]{4}");<br/>
+System.out.println(flag); -> true
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>23. String toString()</h3><br/>
+- 문자열로 만들어 리턴하는 메서드입니다.<br/>
+예) String str = "장현";<br/>
+str.toString(); -> 문자열 "장현"을 리턴합니다<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<h3>24. static String valueOf(Object obj), valueOf(long l), valueOf(int i), valueOf(float f), valueOf(double d),<br/>
+valueOf(char[] data, int offset, int count), valueOf(char[] data), valueOf(char c), valueOf(boolean b)</h3><br/>
+- toString 메서드와 비슷하나, 파라미터안에 null이 들어가면 문자열 null을 만들어서 담습니다.<br/>
+예) String str = null;<br/>
+String.valueOf(str); -> 문자열 "null" 리턴, toString 이라면 널포인트 익셉션 발생합니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>25. String trim()</h3><br/>
+- 대상 문자열의 앞 / 뒤 공백문자를 모두 제거하여 리턴해줍니다.<br/>
+예) String str = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;안녕하세요&nbsp;&nbsp;&nbsp;&nbsp;장현입니다!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";<br/>
+str.trim(); -> "안녕하세요&nbsp;&nbsp;&nbsp;&nbsp;장현입니다!"  로 만들어줍니다<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>26. String 	toUpperCase(), toUpperCase(Locale locale)</h3><br/>
+- 대상 문자열을 모두 대문자로 변환합니다. 파라미터에 Locale 클래스를 인자로 받을 수도 있습니다. 인자가 없으면 디폴트 로케일로 지정됩니다<br/>
+예) String str = "Insutil";<br/>
+str.toUpperCase(); -> "INSUTIL" 변환<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/><br/>
+<h3>27. String toLowerCase(), toLowerCase(Locale locale)</h3><br/>
+- 대상 문자열을 모두 소문자로 변환합니다.<br/>
+예) String str = "Insutil";<br/>
+str.toLowerCase() -> "insutil" 변환<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<h3>28. char[] toCharArray()</h3><br/>
+- 스트링을 새로운 char 배열 형태로 변환합니다.<br/>
+예) String str = "정채현";<br/>
+char[] charArray = str.toCharArray();<br/>
+for(int i = 0; i < charArray.length; i++) {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("charArray[" + i + "] : " + charArray[i]);<br/>
+}<br/>
+콘솔 출력 값 :<br/>
+charArray[0] : 정<br/>
+charArray[1] : 채<br/>
+charArray[2] : 현<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>29. String 	substring(int beginIndex), substring(int beginIndex, int endIndex)</h3><br/>
+- substring 은 2가지 메서드가 있습니다. 인자 하나를 받는 substring 메서드는 시작 인덱스부터 문자열 끝까지 잘라서 반환하고,<br/>
+인자 두 개를 받는 substring 은 문자열의 시작 부분과 끝 부분을 지정해서 그 부분만 잘라서 반환합니다. 일반적으로 많이 쓰이는 건 후자입니다.<br/>
+예) String str = "0123456789";<br/>
+str.substring(5); -> "56789" 를 반환 (5번 index 를 포함하여 나머지 문자열을 반환합니다)<br/>
+str.substring(5, 8); -> "567" 를 반환 (5번 index 를 포함하고 8번 인덱스 미만(끝 인덱스 미포함)의 문자열을 반환합니다)<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>30. String[] split(String regex), String[] split(String regex, int limit)</h3><br/>
+- 입력받은 정규표현식 또는 특정 문자를 기준으로 문자열을 나누어 배열에 저장하여 리턴합니다.<br/>
+예) String str = "010-1234-5678";<br/>
+String[] splitNum = str.split("-");<br/>
+String str1 = splitNum[0]; -> "010"<br/>
+String str2 = splitNum[1]; -> "1234"<br/>
+String str3 = splitNum[2]; -> "5678"<br/>
+<br/>
+- 다음은 인자 값을 두 개 받는 경우입니다. 두 번째 인자 값(int 형)은 배열의 크기를 결정합니다.<br/>
+예) String str = "010-1234-5678";<br/>
+String[] splitNum = str.split("-", 2);<br/>
+String str1 = splitNum[0]; -> "010"<br/>
+String str2 = splitNum[1]; -> "1234-5678"<br/>
+<br/>
+참고로 String 으로 받는 인자는 정규표현식을 인자로 받기 때문에 아래와 같은 실수를 할 수 있으므로 주의하도록 합시다!<br/>
+예) String str = "안.녕.하.세.요";<br/>
+str.split("."); -> 이렇게 하면 안됩니다! (정규식에서 .는 임의의 문자를 의미하기 때문)<br/>
+str.split("\\."); -> 이렇게 해야 여러분이 원하는 작업물이 나옵니다.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>31. String replace(char oldChar, char newChar), String replace(CharSequence target, CharSequence replacement)</h3><br/>
+- 자신이 바꾸고싶은 문자로 문자열을 치환시켜줍니다.<br/>
+예) String str = "인스유틸은 스타트업입니다!";<br/>
+str = str.replace("스타트업", "대기업"); -> "인스유틸은 대기업입니다!"<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>32. String 	replaceAll(String regex, String replacement)</h3><br/>
+- replace 와 거의 비슷하나 한가지 다른 점은 replace는 첫 번째 인자 값으로 문자열을 받는 것에 반해 replaceAll은 첫 번째 인자 값으로 정규식을 받는다는 것입니다.<br/>
+그래서 Replace는 특수문자로도 치환이 쉽지만 ReplaceAll은 정규식 특성상 특수문자로 치환이 어렵습니다.<br/>
+예) String str = "Go to the city... Boy...";<br/>
+String rename = str.replaceAll("(?i)[b-c]", "K");<br/>
+System.out.println(rename); -> 콘솔 출력 값 : Go to the Kity... Koy...<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<h3>33. String replaceFirst(String regex, String replacement)</h3><br/>
+- replaceFirst 메서드는 자신이 바꾸고싶은 문자열이 처음으로 해당할때만 치환시켜줍니다.<br/>
+예) String str = "장현은 인스유틸의 신입사원입니다. 인스유틸은 IT 기업입니다";<br/>
+str = str.replaceFirst("인스유틸", "9월");<br/>
+System.out.println(str); -> 콘솔 출력 값 : 장현은 9월의 신입사원입니다. 인스유틸은 IT 기업입니다<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>34. String intern()</h3><br/>
+- 스트링 인스턴스의 문자열을 상수풀에 등록하는 메서드 입니다. 상수풀에 이미 존재하는 경우에는 해당 문자열의 주소를 반환합니다.<br/>
+String str1 = "장현";<br/>
+String str2 = new String("장현");<br/>
+str2 = str2.intern(); -> str2에는 str1과 같은 주소값이 저장되게 된다(기존의 str2의 인스턴스는 가비지 컬렉트 됩니다)<br/>
+if(str1 == str2) {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("출력 될까요?"); -> intern 메서드로 인해 같은 메모리 주소를 쓰므로 출력이 됩니다<br/>
+}<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<h3>35. boolean startsWith(String prefix), boolean startsWith(String prefix, int toffset)</h3><br/>
+- 문자열을 파라미터를 기준으로 시작되는지를 확인합니다<br/>
+예) String str = "abcde";<br/>
+System.out.println(str.startsWith("a")); -> true (a부터 시작하는게 맞으므로 true 반환)<br/>
+System.out.println(str.startsWith("ab")); -> true (ab도 마찬가지)<br/>
+System.out.println(str.startsWith("c", 2)); -> true ( 인덱스 2는 c부터 시작하므로 true)<br/>
+System.out.println(str.startsWith("c", 1)); -> false ( 인덱스 1는 b부터 시작하므로 false)<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<h3>36. CharSequence subSequence(int beginIndex, int endIndex)</h3><br/>
+- 문자열을 파라미터를 기준으로 범위를 지정해서 CharSequence 형태로 반환해줍니다.<br/>
+여기서 CharSequence 란 String, StringBuffer, StringBuilder 등 의 상위 클래스입니다.<br/>
+CharSequence 객체내 보관하는 문자열은 같은 String 클래스와 같은 유니코드라 하더라도 <br/>
+마크업 문자를 사용하여 변형과 가공이 가능한 문자열이란 의미로 스타일 문자 또는 연속되는 문자라고 합니다.<br/>
+예) String str = "abcde";<br/>
+System.out.println(str.subSequence(0, 4)); -> abcd 출력<br/>
+System.out.println(str.subSequence(1, 3)); -> bc 출력<br/>
+System.out.println(str.subSequence(2, 3)); -> c 출력<br/>
+System.out.println(str.subSequence(0, str.length())); -> abcde 출력<br/>
+<br/>
+<br/>
+<p style="color: #005cbf; font-size: 30px; font-weight: bolder;">
+regionMatches 와 offsetByCodePoints 메서드를 제외한 String 관련 메서드들을 모두 정리했습니다. <br/>
+regionMatches 와 offsetByCodePoints는 레퍼런스가 별로 없을 뿐더러 찾아서 살펴봤는데도 이해가 잘 안되서 추가하지 않았습니다.<br/>
+<br/>
+그럼 이상으로, 스트링 관련 포스팅을 마치겠습니다.<br/>
+그럼 모두 좋은 하루 보내세요!
+</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/study/2019/12/15/regex/" data-toggle="tooltip" data-placement="top" title="자바 정규식 (Regular Expression)">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+          <a class="btn btn-primary float-right" href="/study/2020/01/19/generic/" data-toggle="tooltip" data-placement="top" title="Generic (1)">Next<span class="d-none d-md-inline">
+              Post</span> &rarr;</a>
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div id="post-disqus" class="container">
+  <div id="disqus_thread" class="col-lg-10 col-md-10 mx-auto" style="margin-top:30px;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://insutil-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          
+          
+        </ul>
+        <p class="copyright text-muted">© insutil. All rights reserved. Powered by GitHub Pages.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+</body>
+</html>
