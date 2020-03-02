@@ -1,0 +1,32 @@
+---
+layout: post
+title: "양방향 순환참조 문제해결"
+subtitle: "양방향 순환참조, Entity를 Response로 Return시 문제해결 방법을 다룹니다."
+date: 2020-03-02
+category: [issue]
+author: dykim413
+comments: true
+---
+
+<p>실무에서 처음으로 JPA를 사용해 프로젝트를 진행하다 보니 크고 작은 문제들이 여기저기 불쑥불쑥 튀어나온다.</p>
+<p>이번에 겪은건 Controller 에서 Entity class 를 json 형태로 리턴하는 와중에 마딱들였다.</p>
+<p class="magt30">N:1, 1:N 의 양방향 매핑관계를 맺고있는 entity를 별도의 DTO 를 이용하지 않고 리턴했더니,</p>
+<p>이때까지 자바 개발을 하면서 보았던 어떤 에러메시지 보다 길고 긴 에러메시지를 보게되었다. </p>
+
+<p class="f20 magt30 magb30 fwb">양방향 N:1 1:N 관계 설정</p>
+<p><img src="https://user-images.githubusercontent.com/55611187/75682884-7d6a5280-5cd9-11ea-934a-86d930ac1274.jpg" width="900"></p>
+<p><img src="https://user-images.githubusercontent.com/55611187/75682901-81967000-5cd9-11ea-86eb-08ce334e3c34.jpg" width="900" class="magt20"></p>
+
+<p>ManyToOne 의 default fetch 타입은 EAGER 이지만, LAZY로 강제 설정했다.</p>
+<P>LIST 의 SIZE 만 체크했기 때문에 LAZY 설정에 의해 연관관계에 있는 Entity를 실제 load 하지는 않고 프록시 타입을 반환한다.</P>
+<p>여기까지는 아무문제가 없었는데, Controller 에서 MessageConveter에 의해 JSON으로 변환되어 응당되는 과정에서 연관관계의 엔티티도 불러온다.</p>
+<p>바로 여기서, 순환참조 문제가 발생한다. A->B, B->A 로 참조가 무한 반복되는 문제가 발생한다.</p>
+
+<p class="f20 fwb magt50 magb30">해결방법</p>
+<p class="">1. @JsonIgnore : 이 어노테이션을 붙이면 json 데이터에 해당 프로퍼티는 null로 들어가게 된다. 즉, 데이터에 아예 포함이 안되게 된다. (내가 적용한 방법.)</p>
+<p class="magt20">2. @JsonManagedReference와 @JsonBackReference : 이 두개의 어노테이션이야말로 순환참조를 방어하기 위한 Annotation이다.
+	연관관계의 비주인 Entity에 @JsonManagedReference를, 연관관계 주인 Entity에 @JsonBackReference 어노테이션을 추가해주면 된다.</p>
+<p class="magt20">3. DTO 사용 : 위와 같은 상황이 발생하게 된 주 원인은 '양방향 맵핑'이기도 하지만, 더 정확하게는 entity 자체를 리턴한데에 있다.
+	entity 자체를 return 하지 말고, DTO 객체를 만들어 필요한 데이터만 옮겨담아 client로 리턴하면 순환참조와 관련된 문제는 예방할 수 있다.</p>
+<p class="magt20">4. 맵핑 재설정 : 양방향 맵핑이 꼭 필요한지 다시 한번 생각해볼 필요가 있다. 만약 양쪽에서 접근 할 필요가 없다면 단방향 맵핑을 하면 자연스레 순환참조가 해결된다.</p>
+<p class="magt50 dblue">※ 개인적으로 생각하는 BEST 전략은 반드시 양방향 매핑 관계과 필요한지 파악하고, 그렇다면 결과는 항상 DTO 를 만들어서 반환하는게 좋다고 본다.</p>
